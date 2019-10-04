@@ -1,4 +1,5 @@
 def task_1():
+    print("1")
     return ''
 
 
@@ -13,3 +14,5 @@ assert task_1() == '''
 88888888
 999999999
 '''
+
+print("1")
