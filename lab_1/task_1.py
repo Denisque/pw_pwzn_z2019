@@ -24,7 +24,6 @@ def task_11():
 
 
 def task_1():
-    a = ("'''")
     b = ("1")
     c = ("22")
     d = ("333")
@@ -34,8 +33,7 @@ def task_1():
     h = ("7777777")
     k = ("88888888")
     l = ("999999999")
-    m = ("'''")
-    return print(a), print(b), print(c), print(d), print(e), print(f), print(g), print(h), print(k), print(l), print(m)
+    return print(b), print(c), print(d), print(e), print(f), print(g), print(h), print(k), print(l)
 
 
 assert task_1() == '''
