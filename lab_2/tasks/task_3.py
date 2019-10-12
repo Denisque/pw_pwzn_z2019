@@ -10,7 +10,14 @@ def unique(values):
     :return: Unique values in order of appear.
     :rtype: list
     """
-    pass
+    uniq = set(values)
+    out = []
+    for i in values:
+        if i in uniq:
+            out.append(i)
+            uniq.remove(i)
+    print(out)
+    return out
 
 
 if __name__ == "__main__":

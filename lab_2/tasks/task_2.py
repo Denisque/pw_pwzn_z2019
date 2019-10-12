@@ -1,5 +1,3 @@
-# Implementacja stacka na liscie, 3 operacje: zwraxana wartosc lista kolejnych maxow,
-
 def stack_operation(stack_commands):
     """
     Funkcja przyjmuję listę jedno i dwu elementowych krotek - operacji na stosie.
@@ -14,7 +12,17 @@ def stack_operation(stack_commands):
     :return: List of outputs from commands.
     :rtype: list
     """
-    pass
+    out = []
+    for i in stack_commands:
+        if i[0] == 'push':
+            out.append(i[1])
+        if i[0] == 'pop':
+            out.pop()
+        if i[0] == 'show_max':
+            print(max(out))
+    print(out)
+    return out
+
 
 
 if __name__ == "__main__":
@@ -23,11 +31,11 @@ if __name__ == "__main__":
         ('pop',),
         ('push', 20), 
         ('pop',), 
-        ('push', 26), 
-        ('push', 20), 
-        ('pop',), 
-        ('show_max',), 
-        ('push', 91), 
+        ('push', 26),
+        ('push', 20),
+        ('pop',),
+        ('show_max',),
+        ('push', 91),
         ('show_max',)
     ]
     assert stack_operation(commands) == [26, 91]

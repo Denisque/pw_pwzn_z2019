@@ -1,7 +1,3 @@
-# Sortowanie przez zliczanie - = indeks listy odpowiada ilosci wystapienia tej wartosci
-# [0 0 0 0] - ile jest 0, 1, 2, 3 odpowiednio
-# np. [1,2,1,3,0] to = 0 1 0 0, 0 1 1 0, 0 2 1 0, 0 2 1 1, 1 2 1 1
-
 def counting_sort(values, _max, _min=0):
     """
     Function returns sorted list.
@@ -18,7 +14,16 @@ def counting_sort(values, _max, _min=0):
     :type _min: int
     :return:
     """
-    pass
+    count = [0] * _max
+    for i in values:
+        count[i] += 1
+    sort = []
+    for i in range(_max):
+        if count[i] > 0:
+            for x in range(count[i]):
+                sort.append(i)
+    print(sort)
+    return sort
 
 
 if __name__ == '__main__':
