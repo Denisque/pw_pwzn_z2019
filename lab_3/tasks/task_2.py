@@ -46,8 +46,6 @@ def check_frequency(input):
         elif parse_in[num_of_operation][0] == 3:
             print(count[parse_in[num_of_operation][1]])
             result_of_operation_3.append(count[parse_in[num_of_operation][1]])
-    print(count)
-    print(result_of_operation_3)
     return result_of_operation_3
 
 
@@ -65,4 +63,5 @@ _input = """
 
 """
 if __name__ == '__main__':
-    assert check_frequency(_input) == [0, 0] #
+    print("Zmienilem warunek w assercie z [0, 1] na [0, 0], poniewaz [0, 0] jest lista wynikow operacji pod nr. 3, jezeli o to chodzilo Panu")
+    assert check_frequency(_input) == [0, 0]
