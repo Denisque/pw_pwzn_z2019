@@ -32,8 +32,10 @@ class Vector:
                 else:
                     pre_vec.append(args[i])
             self.vec = tuple(pre_vec)
+            self._dim
         else:
             self.vec = args
+            self._dim
 
     # Rownosci
     def __eq__(self, other):
@@ -78,12 +80,7 @@ class Vector:
 
     # Dlugosci
     def __len__(self):
-        result = 0
-        for i in range(self._dim):
-            result = result + self.vec[i]**2
-        result = math.sqrt(result)
-        result = int(result)
-        return result
+        return self._dim
 
     @staticmethod
     def calculate_vector(beg, end):
@@ -128,14 +125,25 @@ class Vector:
         else:
             print("Wymiary wektorow nie zgadzaja sie")
 
+    @property
+    def len(self):
+        result = 0
+        for i in range(self._dim):
+            result = result + self.vec[i] ** 2
+        result = math.sqrt(result)
+        #result = int(result)
+        return result
+
 
 if __name__ == '__main__':
-    v1 = Vector(1, 2, 3)
-    v2 = Vector(1, 2, 3)
+    v1 = Vector(1,2,3)
+    v2 = Vector(1,2,3)
     assert v1 + v2 == Vector(2,4,6)
     assert v1 - v2 == Vector(0,0,0)
-    assert v1 * 2 == Vector(2, 4, 6)
+    assert v1 * 2 == Vector(2,4,6)
     assert v1 * v2 == 14
-    assert len(Vector(3, 4)) == 5.
-    assert Vector.calculate_vector([0, 0, 0], [1, 2, 3]) == (1, 2, 3)
+    assert len(Vector(3,4)) == 2
+    assert Vector(3,4).dim == 2
+    assert Vector(3,4).len == 5.
+    assert Vector.calculate_vector([0, 0, 0], [1,2,3]) == (1,2,3)
     assert Vector.from_points([0, 0, 0], [1,2,3]) == Vector(1,2,3)
