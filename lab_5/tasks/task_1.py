@@ -11,19 +11,28 @@ from operator import add, mul, sub, truediv
 
 
 class CalculatorError(Exception):
-    pass
+    def __init__(self):
+        try:
+            x = 11 / 0
+        except Exception as e:
+            self.__cause__ = e
+        print("dzielenie przez 0")
 
 
-class WrongOperation(Exception):
-    pass
+
+class WrongOperation(CalculatorError):
+    def __init__(self):
+        print("błędna operacja")
 
 
-class NotNumberArgument(Exception):
-    pass
+class NotNumberArgument(CalculatorError):
+    def __init__(self):
+        print("błędne argumenty (nie liczba)")
 
 
-class EmptyMemory(Exception):
-    pass
+class EmptyMemory(CalculatorError):
+    def __init__(self):
+        print("pusta pamięć")
 
 
 class Calculator:
@@ -52,10 +61,21 @@ class Calculator:
         :rtype: float
         """
         if operator in self.operations:
-            arg2 = arg2 or self.memory
-            if arg2:
-                self._short_memory = self.operations[operator](arg1, arg2)
-                return self._short_memory
+            if arg2 == None and self.memory == None:
+                raise EmptyMemory
+            else:
+                if arg2 == 0 and operator == "/":
+                    raise CalculatorError
+                else:
+                    if type(arg1) != (float, int) or type(arg2) != (float, int):
+                        raise NotNumberArgument
+                    else:
+                        arg2 = arg2 or self.memory
+                        if arg2:
+                            self._short_memory = self.operations[operator](arg1, arg2)
+                            return self._short_memory
+        else:
+            raise WrongOperation
 
     @property
     def memory(self):
@@ -71,7 +91,10 @@ class Calculator:
 
     def in_memory(self):
         """Prints memorized value."""
-        print(f"Zapamiętana wartość: {self.memory}")
+        if self.memory != None:
+            print(f"Zapamiętana wartość: {self.memory}")
+        else:
+            raise EmptyMemory
 
 
 if __name__ == '__main__':
