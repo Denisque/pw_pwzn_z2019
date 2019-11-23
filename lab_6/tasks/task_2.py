@@ -13,7 +13,17 @@ import re
 
 
 def check_animal_list(file_path):
-    pass
+    with open(file_path, encoding="utf-8") as file_:
+        input_ = file_.readlines()
+        pattern_F = r'[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}_F_[0-9]{1,1000}[.]{1}[0-9]{3}[e]{1}[+-]{1}\d*\s'
+        pattern_M = r'[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}_M_[0-9]{1,1000}[.]{1}[0-9]{3}[e]{1}[+-]{1}\d*\s'
+        out = [0, 0]
+        for line in input_:
+            if bool(re.fullmatch(pattern_F, line)):
+                out[0] = out[0] + 1
+            if bool(re.fullmatch(pattern_M, line)):
+                out[1] = out[1] + 1
+        return tuple(out)
 
 
 if __name__ == '__main__':
