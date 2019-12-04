@@ -1,6 +1,5 @@
 import numpy as np
 
-# kwadrat 1 na 1, losujem punktow, sprawdzamy ile
 
 def estimate_pi(n):
     """
