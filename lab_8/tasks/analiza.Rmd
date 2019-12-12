@@ -1,0 +1,119 @@
+---
+jupyter:
+  jupytext:
+    formats: ipynb,md,Rmd
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.3.0
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+## 1. Dodaj kod pozwalający na wczytanie pliku ze ścieżki data/input01.txt z wykorzystaniem numpy. Plik zawiera ustrukturyzowane dane z niepewnością pomiarową.
+
+```{python}
+import numpy as np
+import os
+
+os.getcwd()
+```
+
+```{python}
+data = np.loadtxt("data/input01.txt", delimiter=',', skiprows=1)
+```
+
+## 2. Dopasuj do punktów prostą z wykorzystaniem funkcji least_sq dodanej w module lib.
+
+```{python}
+from tools.fit_funcs import least_sq
+```
+
+```{python}
+data_xy = np.empty((2,100))
+data_xy[0, :] = data[:,0] # x
+data_xy[1, :] = data[:,1] # y
+```
+
+```{python}
+a_b = least_sq(data_xy)
+```
+
+## 3. Sprawdź, niepewność względna których punktów przekracza 5%. Wykonaj dopasowanie tylko dla punktów, których niepewność pomiarowa nie przekraczaja 5%.
+
+```{python}
+data_xy_niepewnosc = data[:,2]
+```
+
+```{python}
+niepewnosc_wzgledna = np.absolute((data_xy_niepewnosc / data[:,0])*100)
+```
+
+```{python}
+indeksy = []
+for i in range(len(niepewnosc_wzgledna)):
+    if niepewnosc_wzgledna[i] > 5.:
+        indeksy.append(i)
+```
+
+```{python}
+data_xy_niepewnosc = np.empty((2,len(niepewnosc_wzgledna)-len(indeksy)))
+data_x_niepewnosc = np.delete(data[:,0], indeksy)
+data_y_niepewnosc = np.delete(data[:,1], indeksy)
+data_niepewnosc = np.delete(data[:,2], indeksy)
+
+data_xy_niepewnosc[0, :] = data_x_niepewnosc # x
+data_xy_niepewnosc[1, :] = data_y_niepewnosc # y
+```
+
+```{python}
+a_b_niepewnosc = least_sq(data_xy_niepewnosc)
+```
+
+## 4. Wykreśl wczytane dane, wraz z niepewnością pomiarową (rozmiar znacznika punktu 2). Punkty, których niepewność pomiarowa nie przekracza 5% mają być wykreślone czarnymi kwadratami. Punkty przekraczające - czerwonymi trójkątami.
+
+```{python}
+import matplotlib.pyplot as plt
+```
+
+```{python}
+fig = plt.figure() 
+
+plt.errorbar(data[:,0], data[:,1], yerr=data[:,2], fmt='ks')
+plt.errorbar(data_xy_niepewnosc[0, :], data_xy_niepewnosc[1, :], yerr=data_niepewnosc, fmt='r^')
+```
+
+## 5. Wykreśl dopasowane proste przerywaną linią. Dodaj legendę. Prosta dopasowana do wszystkich punktów ma się nazywać all (kolor niebieski), prosta z ograniczeniem Δ<5% (kolor zielony).
+
+```{python}
+# Dopasowane ALL
+y_all = a_b[0]*data[:,0] + a_b[1]
+```
+
+```{python}
+# Dopasowanie Niepewnosc
+y_niepewnosci = a_b_niepewnosc[0]*data_xy_niepewnosc[0, :] + a_b_niepewnosc[1]
+```
+
+```{python}
+fig = plt.figure() 
+
+plt.errorbar(data[:,0], data[:,1], yerr=data[:,2], fmt='ks')
+plt.errorbar(data_xy_niepewnosc[0, :], data_xy_niepewnosc[1, :], yerr=data_niepewnosc, fmt='r^')
+plt.errorbar(data[:,0], y_all, fmt='b--', label='all')
+plt.errorbar(data_xy_niepewnosc[0, :], y_niepewnosci, fmt='g--', label='Δ<5%')
+plt.legend(loc='upper left')
+```
+
+## 6. W pliku powinna znajdować się linijka wyświetlająca tylko skończony wykres oraz druga pozwalająca na zapisanie go do pliku fitted_input01 w fromacie png, z rozdzielczością 200 dpi.
+
+```{python}
+fig
+```
+
+```{python}
+fig.savefig('fitted_input01.png', dpi=200)
+```
