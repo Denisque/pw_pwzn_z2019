@@ -80,7 +80,7 @@ class CalculatorGUI(tk.Frame):
         self.update_screen()
 
     def update_var(self, num):
-        state = self.state.get() # jeden parametr, a zawiera chyba wiecej
+        state = self.state.get()
         if state:
             self.variables['var_1'] += str(num)
             self.variables['var_1'] = self.variables['var_1'].lstrip('0')
